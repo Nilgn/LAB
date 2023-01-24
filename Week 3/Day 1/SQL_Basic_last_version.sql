@@ -74,5 +74,17 @@ SELECT trimmedtable.date, trimmedtable.duration, COUNT(*) FROM (SELECT `date`, d
 # Query 18
 # In the trans table, for account_id 396, sum the amount of transac	tions for each type (VYDAJ = Outgoing, PRIJEM = Incoming). Your output should have the account_id, the type and the sum of amount, named as total_amount. Sort alphabetically by type.
 
- 
+
+# Query 19
+# From the previous output, translate the values for type to English, rename the column to transaction_type, round total_amount down to an integer
+
+
+# Query 20
+# From the previous result, modify your query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference.
+
+
+# Query 21
+# Continuing with the previous example, rank the top 10 account_ids based on their difference.
+
+
 
