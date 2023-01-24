@@ -33,7 +33,9 @@ SELECT account_id FROM bank.loan WHERE duration = 60 ORDER BY amount LIMIT 5;
 
 # Query 8
 # What are the unique values of k_symbol in the order table?
-SELECT DISTINCT k_symbol FROM `order`;
+SELECT DISTINCT k_symbol FROM `order` ORDER BY k_symbol; # burda order by koyarak koymadigimizdaki boslugu en alta koyduk. Dene bak!
+# ya da
+SELECT DISTINCT k_symbol FROM `order` WHERE k_symbol <> ""; # burda da empty space olmasin diye esit olmasin demek olan <> kullandik. 
 
 # Query 9
 # In the order table, what are the order_ids of the client with the account_id 34?
@@ -41,7 +43,7 @@ SELECT order_id FROM `order` WHERE account_id =34 ORDER BY order_id;
 
 #Query 10
 # In the order table, which account_ids were responsible for orders between order_id 29540 and order_id 29560 (inclusive)?
-SELECT account_id FROM bank.order WHERE 29540 < order_id AND order_id < 295660 GROUP BY order_id;
+!!!!! SELECT DISTINCT account_id FROM `order` WHERE order_id BETWEEN 29540 AND 295660;
 
 # Query 11
 # In the order table, what are the individual amounts that were sent to (account_to) id 30067122?
@@ -53,7 +55,7 @@ SELECT trans_id, `date`, `type`, amount FROM bank.trans WHERE account_id = 793 O
 
 # Query 13
 # In the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by the district_id in ascending order.
-SELECT district_id, count(district_id) FROM bank.client WHERE district_id < 10  GROUP BY district_id ORDER BY district_id ASC;
+SELECT district_id, count(district_id) FROM bank.client WHERE district_id < 10  GROUP BY district_id ORDER BY district_id ASC; # For each demek groupla demek aslinda.
 
 # Query 14	
 # In the card table, how many cards exist for each type? Rank the result starting with the most frequent type.
@@ -69,14 +71,21 @@ SELECT account_id, amount FROM loan ORDER BY amount DESC LIMIT 10;
 
 # Query 17
 # In the loan table, for each day in December 1997, count the number of loans issued for each unique loan duration, ordered by date and duration, both in ascending order. You can ignore days without any loans in your output.	
-SELECT trimmedtable.date, trimmedtable.duration, COUNT(*) FROM (SELECT `date`, duration ,LEFT(`date`, 4) AS trimdate FROM loan) trimmedtable WHERE trimmedtable.trimdate = 9712 GROUP BY trimmedtable.date, trimmedtable.duration;
+### SELECT trimmedtable.date, trimmedtable.duration, COUNT(*) FROM (SELECT `date`, duration ,LEFT(`date`, 4) AS trimdate FROM loan) trimmedtable WHERE trimmedtable.trimdate = 9712 GROUP BY trimmedtable.date, trimmedtable.duration;
+SELECT duration, `date`, COUNT(loan_id) AS num_loans 
+FROM loan 
+WHERE `date` LIKE '9712%' 
+GROUP BY `date`, duration
+ORDER BY `date`, duration ASC LIMIT 1000; # Bu yol daha guzelmis!
+
 
 # Query 18
 # In the trans table, for account_id 396, sum the amount of transac	tions for each type (VYDAJ = Outgoing, PRIJEM = Incoming). Your output should have the account_id, the type and the sum of amount, named as total_amount. Sort alphabetically by type.
-
+SELECT account_id, `type`, SUM(amount) AS total_amount FROM trans WHERE account_id = 396 GROUP BY `type` ORDER BY `type`;
 
 # Query 19
 # From the previous output, translate the values for type to English, rename the column to transaction_type, round total_amount down to an integer
+# SELECT account_id, CASE WHEN `type` = 'VYDAJ' THEN 'OUtGOING WHEN type PRIJEM = Incoming END AS 'transaction_type';
 
 
 # Query 20
